@@ -1,0 +1,130 @@
+
+address{
+    text-align: center;
+}
+
+header{
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    text-align: center;
+    background-color: #a6dde7;
+    
+}
+hr{
+    max-width: 1200px;
+}
+footer{
+    /* Red, Green, Blue , alpha (transparency */
+    /*background-color: rgba(173, 216, 230, 0.5);*/
+    max-width: 1200px;
+    text-align: center;
+    margin: auto;
+    background-color: burlywood;
+    font-size: 18pt;
+    font-family:"Papyrus";
+    font-family:cursive;
+}
+#title{
+    font-size: 48pt;
+}
+/* Apply this to the li elements, not ul*/
+/*Alternatively: ul, li */
+#pageTop{
+    display: inline-block;
+    /* Removes the bullet points */
+    list-style-type: none;
+    margin: 0 40px;
+    font-size: 24pt;
+    /*background-color: rgb(193, 197, 173, 0.5)*/
+    /*Adds space between the elements in the list */
+    /*gap only works for flex!*/
+}
+main > p, main>h2>p{
+    max-width: 1200px;
+    margin: auto;
+    justify-content: left;
+    text-align: left;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 16pt;
+}
+main > h1{
+    text-align: center;
+    margin:auto;
+    max-width: 1200px;
+    font-size: 36pt;
+}
+main > h2{
+    text-align:left;
+    margin:auto;
+    max-width: 1200px;
+    font-size:16pt;
+}
+.authorBox > p{
+  font-size:16pt;
+}
+.authorBox{
+  border-top:black;
+  border-bottom:black;
+  border-top:solid;
+  border-bottom:solid;
+  max-width: 1200px;
+  margin:auto;
+  text-align:left;
+}
+#homePage{
+  max-width: 1200px;
+  margin:auto;
+  text-align:left;
+}
+#homePage > main >h >p{
+  font-size: 16pt;
+}
+#homePage >main> h{
+  font-size: 36pt;
+}
+html{
+    background-color: #ffCD90;
+}
+/*span vs div: div is block-level, span is inline element.*/
+ /* unvisited link */
+ .navButton:link {
+    color: #FF0000;
+  }
+  
+  /* visited link */
+  .navButton:visited {
+    color: #00FF00;
+  }
+  
+  
+  /* mouse over link */
+  .navButton:hover {
+    color: #FF00FF;
+  }
+  
+  /* selected link */
+  .navButton:active {
+    color: #0000FF;
+  } 
+  .navButton{
+    font-size: 24pt;
+  }
+  .blog-title{
+    font-size: 20pt;
+    border: none;
+    background: none;
+    text-align:center;
+    padding-left: 20%;
+  }
+  .blog-title:link{
+    color: red;
+  }
+  .blog-title:visited{
+    color:orange;
+  }
+  .blog-title:hover{
+    color:pink;
+  }
+  .blog-title:active{
+    color:purple;
+  }
+  /*Order matters for this pseudo selector!*/
