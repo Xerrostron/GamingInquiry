@@ -20,6 +20,10 @@ buttons.forEach(button => {
     {
         loadHomePage();
     }
+    if(value==="User")
+    {
+        loadUserLogin();
+    }
     else{
         console.log("Unknown value.");
     }
@@ -48,6 +52,25 @@ function loadHomePage()
          </h>
         </main>
      `;
+}
+function loadUserLogin()
+{
+    //several input types: hidden, email, color, button, checkbox, file, date, datetime-local, radio, tel, search, range, url, week, password
+    const contentDiv = document.querySelector(".blogPost");
+    contentDiv.innterHTML =
+    `
+      <main>
+        <div id="user_modal">
+            <label for="email_address">Email</label>
+            <input type="email" id="email_address">
+            <label for="text">Username</label>
+            <input type="text" id ="username">
+            <label for="user_password">Password</label>
+            <input type="password" id="user_password">
+        </div>
+      </main>
+
+    `
 }
 function loadAboutPage()
 {
@@ -134,6 +157,8 @@ function loadBlogPost(title)
            {
                 mainBlock.appendChild(paragraphs[j]);
                 mainBlock.appendChild(document.createElement("br"));
+                //append a button at the bottom of each paragraph.
+
            }
 
         }
