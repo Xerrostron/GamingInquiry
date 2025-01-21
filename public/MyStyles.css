@@ -127,4 +127,48 @@ html{
   .blog-title:active{
     color:purple;
   }
+  #user_modal{
+
+    z-index: 1;
+    display:flex;
+    flex-direction:column;
+    background: lightcoral;
+    max-width: 1200px;
+    position:fixed;
+    /*fixed is relative to viewport. Absolute is relative to nearest neighbor*/
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    /*Centers the box*/
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    border-color:black;
+    border-width:20px;
+    border: solid;
+    cursor: grab;
+    cursor: -webkit-grab;
+    cursor:-moz-grab; 
+    gap:3px;
+  }
+  /*the Last child of user_modal will be spaced differently with margin-top. gap is used for ALL subchilds!*/
+  #user_modal > :last-child{
+    margin-top:10px;
+  }
+  #user_modal > p{
+    margin-top:5px;
+    margin-bottom:2px;
+  }
+  #user_modal:active{
+    cursor: -webkit-grabbing;
+    cursor:-moz-grabbing;
+  }
+  .modal_input{
+    width:200px;
+    gap:20px;
+  }
+  
+
   /*Order matters for this pseudo selector!*/

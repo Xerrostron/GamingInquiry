@@ -8,6 +8,7 @@ buttons.forEach(button => {
     button.addEventListener("click", function()
 {
     const value = this.value;
+    console.log(value);
     if(value==="About")
     {
         loadAboutPage();
@@ -22,7 +23,13 @@ buttons.forEach(button => {
     }
     if(value==="User")
     {
-        loadUserLogin();
+        if(document.querySelector("#user_modal"))
+        {
+            console.log("Only  one modal box allowed at a time.");
+        }
+        else{
+            loadUserLogin();
+        }
     }
     else{
         console.log("Unknown value.");
@@ -57,20 +64,75 @@ function loadUserLogin()
 {
     //several input types: hidden, email, color, button, checkbox, file, date, datetime-local, radio, tel, search, range, url, week, password
     const contentDiv = document.querySelector(".blogPost");
-    contentDiv.innterHTML =
+    const userBox = document.createElement("div");
+    userBox.setAttribute("id","user_modal");
+    userBox.setAttribute("draggable","true");
+    userBox.innerHTML = 
     `
-      <main>
-        <div id="user_modal">
-            <label for="email_address">Email</label>
-            <input type="email" id="email_address">
-            <label for="text">Username</label>
-            <input type="text" id ="username">
-            <label for="user_password">Password</label>
-            <input type="password" id="user_password">
-        </div>
-      </main>
+           <label for="email_address">Email</label>
+           <input type="email" class="modal_input" id="email_address" placeholder="Basic Email Format">
+           <label for="text">Username</label>
+           <input type="text" class="modal_input" id ="username" placeholder="4-12 chars, Alphanumeric">
+           <label for="user_password">Password</label>
+           <input type="password" class="modal_input" id="user_password" placeholder="8+ chars, 1 uppercase, 1 lowercase, 1 digit">
+           <label for"password_check">Re-Type your Password</label>
+           <input type="password" class="modal_input" id="user_password_re" placeholder="Retype the password entered.">
+           <button class="modal_input" id="create_account_button" type="button" value="createAcc">Create Account</button>
+           <p>Or...</p>
+           <button class="modal_input" id="login_account_button" type="button" value="loginAcc">Login</button>
 
-    `
+    `;
+    contentDiv.append(userBox);
+    createAccountButton();
+    loadAccountButton();
+}
+function createAccountButton()
+{
+    
+    //get the elements based on ID of the specific labels, and get the values there
+    //empty elements with no user input are "" NOT NULL
+    let testUsername = document.querySelector("#username");
+    let testEmail = document.querySelector("#email-address");
+    let testPassword = document.querySelector("user_password");
+    let testPasswordRe = document.querySelector("user_password_re");
+
+    // Define regular expressions: Can look these up, don't worry about memorizing.
+    const usernameRegex = /^[a-zA-Z0-9]{4,12}$/; // Alphanumeric, 4-12 characters
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email format
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/; // 8+ characters, 1 uppercase, 1 lowercase, 1 digit
+
+     // Test the input values
+     const isUsernameValid = usernameRegex.test(testUsername);
+     const isEmailValid = emailRegex.test(testEmail);
+     const isPasswordValid = passwordRegex.test(testPassword);
+     const doPasswordsMatch = testPassword === testPasswordRe;
+
+      // Log results or display messages
+    console.log(`Username valid: ${isUsernameValid}`);
+    console.log(`Email valid: ${isEmailValid}`);
+    console.log(`Password valid: ${isPasswordValid}`);
+    console.log(`Passwords match: ${doPasswordsMatch}`);
+
+    // Perform actions based on validation, Do not do this automatically. only run this code for button handler
+    const createButton = document.querySelector("#create_account_button");
+    createButton.addEventListener("click", function()
+    {
+
+        if (isUsernameValid && isEmailValid && isPasswordValid && doPasswordsMatch) {
+            //before I can confirm, check an Email tied to account that already exists!
+            alert("Account created successfully!");
+        } else {
+            alert("Please correct the errors in your input.");
+        }
+    });
+
+   // if (isUsernameValid && isEmailValid && isPasswordValid && doPasswordsMatch) {
+   //     alert("Account created successfully!");
+   // } else {
+   //     alert("Please correct the errors in your input.");
+   // }
+
+
 }
 function loadAboutPage()
 {
