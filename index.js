@@ -6,7 +6,8 @@ const port = 3000;
 
 // MongoDB connection URI (replace with your connection string)
 // Connection URL
-const mongoURI = 'mongodb://localhost:27017/myDatabase'; // Use your MongoDB URI
+//const mongoURI = 'mongodb://localhost:27017/myDatabase'; // Use your MongoDB URI
+const mongoURI = "mongodb://0.0.0.0:27017/";
 
 // Connect to MongoDB
 mongoose
@@ -36,7 +37,7 @@ const accountSchema = new mongoose.Schema({ //creating a mongoose schema, which 
 //what is a model and what is a schema?
 //The model is actual object in which i will interact with. A schema can be reused on different objects. 
 const Account = mongoose.model('Account', accountSchema);
-
+module.exports = { Account }; //allows Account object to be used elsewhere
 // Middleware to parse JSON data in requests
 app.use(express.json());
 
@@ -65,6 +66,8 @@ app.get('/', (req, res) => {
 //HOWEVER, i dont yet have a createAccount url. createAccount logic is handled in a function attached to a button.
 //fix!
 //Can use fetch() method which can process a POST request at a certain URL
+
+//mongod in terminal to run the server 
 app.post('/createAccount', async (req, res) => {
     const { username, email, password } = req.body;
 
@@ -101,3 +104,6 @@ app.get('/accounts', async (req, res) => {
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
+//intalled mongoDB and added to path
+//mkdir /data or something like that to store my data. now the server is running
+

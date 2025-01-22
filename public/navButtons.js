@@ -3,6 +3,7 @@
 /*Getting elements by class name returns an HTML collection this is Dynamic*/
 /*alternative way to select: */
 /*document.querySelectorAll(.navButton)* This is static*/
+const { Account } = require('./index');
 const buttons = document.querySelectorAll(".navButton");
 buttons.forEach(button => {
     button.addEventListener("click", function()
@@ -84,55 +85,81 @@ function loadUserLogin()
     `;
     contentDiv.append(userBox);
     createAccountButton();
-    loadAccountButton();
+    //loadAccountButton();
 }
 function createAccountButton()
 {
     
-    //get the elements based on ID of the specific labels, and get the values there
-    //empty elements with no user input are "" NOT NULL
-    let testUsername = document.querySelector("#username");
-    let testEmail = document.querySelector("#email-address");
-    let testPassword = document.querySelector("user_password");
-    let testPasswordRe = document.querySelector("user_password_re");
-
-    // Define regular expressions: Can look these up, don't worry about memorizing.
-    const usernameRegex = /^[a-zA-Z0-9]{4,12}$/; // Alphanumeric, 4-12 characters
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email format
-    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/; // 8+ characters, 1 uppercase, 1 lowercase, 1 digit
-
-     // Test the input values
-     const isUsernameValid = usernameRegex.test(testUsername);
-     const isEmailValid = emailRegex.test(testEmail);
-     const isPasswordValid = passwordRegex.test(testPassword);
-     const doPasswordsMatch = testPassword === testPasswordRe;
-
-      // Log results or display messages
-    console.log(`Username valid: ${isUsernameValid}`);
-    console.log(`Email valid: ${isEmailValid}`);
-    console.log(`Password valid: ${isPasswordValid}`);
-    console.log(`Passwords match: ${doPasswordsMatch}`);
+    
 
     // Perform actions based on validation, Do not do this automatically. only run this code for button handler
     const createButton = document.querySelector("#create_account_button");
     createButton.addEventListener("click", function()
     {
+        //get the elements based on ID of the specific labels, and get the values there
+    //empty elements with no user input are "" NOT NULL
+      let testUsername = document.querySelector("#username");
+      console.log("testUsername: " + testUsername.value);
 
+      let testEmail = document.querySelector("#email_address");
+      console.log("testEmail: " + testEmail.value);
+    
+      let testPassword = document.querySelector("#user_password");
+      console.log("testUserPassword: " + testPassword.value);
+
+      let testPasswordRe = document.querySelector("#user_password_re");
+      console.log("testPasswordRe: " + testPasswordRe.value);
+
+
+    // Define regular expressions: Can look these up, don't worry about memorizing.
+      const usernameRegex = /^[a-zA-Z0-9]{4,12}$/; // Alphanumeric, 4-12 characters
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email format
+      const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/; // 8+ characters, 1 uppercase, 1 lowercase, 1 digit
+
+     // Test the input values
+     const isUsernameValid = usernameRegex.test(testUsername.value);
+     const isEmailValid = emailRegex.test(testEmail.value);
+     const isPasswordValid = passwordRegex.test(testPassword.value);
+     const doPasswordsMatch = testPassword.value === testPasswordRe.value;
+
+      // Log results or display messages
+     console.log(`Username valid: ${isUsernameValid}`);
+     console.log(`Email valid: ${isEmailValid}`);
+     console.log(`Password valid: ${isPasswordValid}`);
+     console.log(`Passwords match: ${doPasswordsMatch}`);
         if (isUsernameValid && isEmailValid && isPasswordValid && doPasswordsMatch) {
             //before I can confirm, check an Email tied to account that already exists!
-            alert("Account created successfully!");
+            //alert("Account created successfully!");
+            //Now it is time to validate the account
+            
+            const data = {
+                username: testUsername.value,
+                password: testPassword.value,
+                email: testEmail.value
+            };
+            //JS most likely wont know what an account is. lets fetch with the data object
+            validateAccount(data);
         } else {
             alert("Please correct the errors in your input.");
         }
     });
-
-   // if (isUsernameValid && isEmailValid && isPasswordValid && doPasswordsMatch) {
-   //     alert("Account created successfully!");
-   // } else {
-   //     alert("Please correct the errors in your input.");
-   // }
-
-
+}
+function validateAccount(account){ 
+    fetch('/createAccount', {
+        method:'POST',
+        headers: {
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify(data),
+       })
+       .then(response => response.json())
+       .then(result => {
+           alert(result.message);
+       })
+       .catch(error => {
+           console.error('Error:', error);
+           alert('An error occurred while creating the account.');
+       });
 }
 function loadAboutPage()
 {
