@@ -3,7 +3,7 @@
 /*Getting elements by class name returns an HTML collection this is Dynamic*/
 /*alternative way to select: */
 /*document.querySelectorAll(.navButton)* This is static*/
-const { Account } = require('./index');
+//const { Account } = require('./index');
 const buttons = document.querySelectorAll(".navButton");
 buttons.forEach(button => {
     button.addEventListener("click", function()
@@ -65,6 +65,19 @@ function loadUserLogin()
 {
     //several input types: hidden, email, color, button, checkbox, file, date, datetime-local, radio, tel, search, range, url, week, password
     const contentDiv = document.querySelector(".blogPost");
+    const testUserBox = document.querySelector("#user_modal");
+    const loginBox = document.querySelector("#login_account_button")
+    console.log("Inside loadUserLogin");
+    // Clear the modal if it already exists
+    //Setting innerHTML to "" is NOT a solution!
+    if (testUserBox) {
+        testUserBox.remove();
+    }
+   // if(loginBox)
+   // {
+   //     loginBox.innerHTML="";
+    //}
+
     const userBox = document.createElement("div");
     userBox.setAttribute("id","user_modal");
     userBox.setAttribute("draggable","true");
@@ -81,70 +94,197 @@ function loadUserLogin()
            <button class="modal_input" id="create_account_button" type="button" value="createAcc">Create Account</button>
            <p>Or...</p>
            <button class="modal_input" id="login_account_button" type="button" value="loginAcc">Login</button>
+           <button class="modal_input" id="exit_button" type="button" value="exit"><img src="exitButton.jpg" alt="exit Button"></button>
 
     `;
+    //for a true pop-up, i need to NOT erase contentDiv. just find previous user_box and delete it
+   // contentDiv.innerHTML ="";
+    //CLEARS OUT PREVIOUS HTML
     contentDiv.append(userBox);
-    createAccountButton();
-    //loadAccountButton();
+    //I should surround these functions inside an event listener
+    const createButton = document.querySelector("#create_account_button");
+    const exitButton = document.querySelector("#exit_button");
+    exitButton.addEventListener("click", function()
+    {
+       // Looks correct but ISNT contentDiv.remove(userBox);
+       //DIRECTLY remove:
+       userBox.remove();
+    });
+    createButton.addEventListener("click", function()
+    {
+        createAccountButton();
+    });
+
+    const loadButton = document.querySelector("#login_account_button");
+    loadButton.addEventListener("click",function()
+    {
+        loadAccountButton();
+    });
 }
 function createAccountButton()
 {
     
-    
-
-    // Perform actions based on validation, Do not do this automatically. only run this code for button handler
-    const createButton = document.querySelector("#create_account_button");
-    createButton.addEventListener("click", function()
-    {
         //get the elements based on ID of the specific labels, and get the values there
     //empty elements with no user input are "" NOT NULL
-      let testUsername = document.querySelector("#username");
-      console.log("testUsername: " + testUsername.value);
+    let testUsername = document.querySelector("#username");
+    console.log("testUsername: " + testUsername.value);
 
-      let testEmail = document.querySelector("#email_address");
-      console.log("testEmail: " + testEmail.value);
+    let testEmail = document.querySelector("#email_address");
+    console.log("testEmail: " + testEmail.value);
+  
+    let testPassword = document.querySelector("#user_password");
+    console.log("testUserPassword: " + testPassword.value);
+
+    let testPasswordRe = document.querySelector("#user_password_re");
+    console.log("testPasswordRe: " + testPasswordRe.value);
+
+
+  // Define regular expressions: Can look these up, don't worry about memorizing.
+    const usernameRegex = /^[a-zA-Z0-9]{4,12}$/; // Alphanumeric, 4-12 characters
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email format
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/; // 8+ characters, 1 uppercase, 1 lowercase, 1 digit
+
+   // Test the input values
+    const isUsernameValid = usernameRegex.test(testUsername.value);
+    const isEmailValid = emailRegex.test(testEmail.value);
+    const isPasswordValid = passwordRegex.test(testPassword.value);
+    const doPasswordsMatch = testPassword.value === testPasswordRe.value;
+
+    // Log results or display messages
+    console.log(`Username valid: ${isUsernameValid}`);
+    console.log(`Email valid: ${isEmailValid}`);
+    console.log(`Password valid: ${isPasswordValid}`);
+    console.log(`Passwords match: ${doPasswordsMatch}`);
+      if (isUsernameValid && isEmailValid && isPasswordValid && doPasswordsMatch) {
+          //before I can confirm, check an Email tied to account that already exists!
+          //alert("Account created successfully!");
+          //Now it is time to validate the account
+          
+          const data = {
+              username: testUsername.value,
+              password: testPassword.value,
+              email: testEmail.value
+          };
+          //JS most likely wont know what an account is. lets fetch with the data object
+          validateAccount(data);
+      } else {
+          alert("Please correct the errors in your input.");
+      }
+
+    // Perform actions based on validation, Do not do this automatically. only run this code for button handler
+   
+}
+function loadAccountButton()
+{
+    //add a previous button that just calls loadUserLogin()
+    //reload HTML to a Login Page
+    //this can be done by just setting contentDiv.innerHTML("");
+    //JUST username and password
+    const userBox = document.querySelector("#user_modal");
+   // userBox.innerHTML = "";
     
-      let testPassword = document.querySelector("#user_password");
-      console.log("testUserPassword: " + testPassword.value);
+    
+    
+    
+        console.log("Changing HTML");
+        userBox.innerHTML=
+    `
+        <label for="text">Username</label>
+        <input type="text" class="modal_input" id ="username" placeholder="4-12 chars, Alphanumeric">
+        <label for="user_password">Password</label>
+        <input type="password" class="modal_input" id="user_password" placeholder="8+ chars, 1 uppercase, 1 lowercase, 1 digit">
+        <button class="modal_input" id="Log-In" type="button">Login</button>
+        <button class="modal_input" id="previous_button" type="button">Previous</button>
+        <button class="modal_input" id="exit_button" type="button" value="exit"><img src="exitButton.jpg" alt="exit Button"></button>
 
-      let testPasswordRe = document.querySelector("#user_password_re");
-      console.log("testPasswordRe: " + testPasswordRe.value);
+    `;
+        const previousButton = document.querySelector("#previous_button");
+        previousButton.addEventListener("click", function()
+        {
+            console.log("loadUserLogin button clicked.");
+            loadUserLogin();
 
+        });
+        const exitButton = document.querySelector("#exit_button");
+        exitButton.addEventListener("click", function()
+        {
+            const contentDiv = document.querySelector(".blogPost");
+            const userBox = document.querySelector("#user_modal");
+            userBox.remove();
+        });
 
-    // Define regular expressions: Can look these up, don't worry about memorizing.
-      const usernameRegex = /^[a-zA-Z0-9]{4,12}$/; // Alphanumeric, 4-12 characters
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email format
-      const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/; // 8+ characters, 1 uppercase, 1 lowercase, 1 digit
-
-     // Test the input values
-     const isUsernameValid = usernameRegex.test(testUsername.value);
-     const isEmailValid = emailRegex.test(testEmail.value);
-     const isPasswordValid = passwordRegex.test(testPassword.value);
-     const doPasswordsMatch = testPassword.value === testPasswordRe.value;
-
-      // Log results or display messages
-     console.log(`Username valid: ${isUsernameValid}`);
-     console.log(`Email valid: ${isEmailValid}`);
-     console.log(`Password valid: ${isPasswordValid}`);
-     console.log(`Passwords match: ${doPasswordsMatch}`);
-        if (isUsernameValid && isEmailValid && isPasswordValid && doPasswordsMatch) {
-            //before I can confirm, check an Email tied to account that already exists!
-            //alert("Account created successfully!");
-            //Now it is time to validate the account
-            
+        //Event listeners are called when a button is clicked. Therefore, only check for values when a button is clicked
+        const loginButton = document.querySelector("#Log-In");
+        loginButton.addEventListener("click", function()
+         {
+            const testUsername = document.querySelector("#username");
+            console.log("testUsername: " + testUsername.value);
+          
+            const testPassword = document.querySelector("#user_password");
+            console.log("testUserPassword: " + testPassword.value);
+    
             const data = {
                 username: testUsername.value,
-                password: testPassword.value,
-                email: testEmail.value
+                password: testPassword.value
             };
-            //JS most likely wont know what an account is. lets fetch with the data object
-            validateAccount(data);
-        } else {
-            alert("Please correct the errors in your input.");
+            validateLogin(data);
+         });
+       
+  
+        
+ }
+
+function validateLogin(data)
+{   
+    //response is the HTML object returned
+    //result is the response parsed with response.json()
+    //apparently, i am passing in nothing
+    console.log(data.username + " data username");
+    console.log(data.password + " data password");
+    console.log("HELLO!!!!!!");
+    fetch('/loadAccount', {
+        method:'POST',
+        headers: {
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify(data),//passing in username and password
+    })
+    //check if successful attempt
+    .then(response => {
+        if (!response.ok) {
+            console.log(response.body);
+            console.log(data);
+            console.log(data.username);
+            console.log(data.password);
+            throw new Error('Login failed: ' + response.status);
         }
-    });
+        return response.json();
+    })
+    .then(account => {
+        localStorage.setItem('currentAccount', JSON.stringify(account)); // Store in localStorage
+        console.log('Logged in account:', account);
+        alert('Login successful!');
+        // Retrieve and use when needed
+        const storedAccount = JSON.parse(localStorage.getItem('currentAccount'));
+        console.log('Stored account:', storedAccount);
+    })
+    
 }
-function validateAccount(account){ 
+function validateAccount(data){ 
+    //fetch: ('postURL', 
+    //{
+  //      method:,
+   //     headers: {
+
+   //     },
+    //    body: JSON.stringify(data),
+  //  })
+    //Do a POST request: fetch a certain url, describe the method, headers and body to CORRECT PROCESS the POST
+    //Using the result of the POST request with .then(response), implement some logic
+    //Make sure you catch errors in the process.
+    //response is generated from the POST request, logic handled in the POST function
+    //response.json streamlines parsing a pure string with a JS object
+
     fetch('/createAccount', {
         method:'POST',
         headers: {
@@ -177,7 +317,7 @@ function loadAboutPage()
 }
 function loadBrowsePage()
 {
-    //NOTE: innterHTML does NOT ACTIVATE A SCRIPT!
+    //NOTE: innerHTML does NOT ACTIVATE A SCRIPT!
     const contentDiv = document.querySelector(".blogPost");
     contentDiv.innerHTML = 
     `

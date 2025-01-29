@@ -1,3 +1,6 @@
+//Encrypt a password with bycrypt instead of plain text queries of a password
+//encrypt the user entered password to confirm a correct login
+
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose'); // Import Mongoose
@@ -68,12 +71,36 @@ app.get('/', (req, res) => {
 //Can use fetch() method which can process a POST request at a certain URL
 
 //mongod in terminal to run the server 
+app.post('/loadAccount', async(req,res) =>{
+    //req.body used mostly in POST
+    //req.query takes results from the url for GET
+    const {username, password} = req.body;
+//passwords can share a password, but not a username/email
+//this should probably be a GET request since i am reading, not writing
+//This logic is wrong though. POST Is prefferd method of user login
+//what information am I loading?
+    try{
+        const existingAccount = await Account.findOne({$and : [{username},{password}]});
+        if(existingAccount){
+            return res.status(200).json(existingAccount);
+        }
+        else{
+            return res.status(401).json({message: 'Unauthorized'})
+        }
+    }
+    catch(error)
+    {
+        console.error('Error creating account:', error);
+        res.status(500).json({ message: 'Internal server error.' });
+    }
+});
 app.post('/createAccount', async (req, res) => {
     const { username, email, password } = req.body;
 
 
     try {
         // Check if the account already exists
+        //
         const existingAccount = await Account.findOne({ $or: [{ username }, { email }] });
         if (existingAccount) {
             return res.status(400).json({ message: 'Account already exists.' });//400 means server cant follow request..
@@ -82,6 +109,7 @@ app.post('/createAccount', async (req, res) => {
         // Create a new account
         const newAccount = new Account({ username, email, password }); // Hash password in production
         await newAccount.save();
+    
 
         res.status(201).json({ message: 'Account created successfully!' });
     } catch (error) {
