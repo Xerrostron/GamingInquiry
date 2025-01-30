@@ -80,9 +80,13 @@ app.post('/loadAccount', async(req,res) =>{
 //This logic is wrong though. POST Is prefferd method of user login
 //what information am I loading?
     try{
-        const existingAccount = await Account.findOne({$and : [{username},{password}]});
-        if(existingAccount){
-            return res.status(200).json(existingAccount);
+        //const existingAccount = await Account.findOne({$and : [{username},{password}]});
+        const user = await Account.findOne({ username });
+        if(user){
+            const { _id, username: uname, email } = user
+            console.log(user.username, " " , user.email, " MR MEESEEKS");
+            res.json({ username: uname, email });
+            //return res.status(200).json(user);
         }
         else{
             return res.status(401).json({message: 'Unauthorized'})

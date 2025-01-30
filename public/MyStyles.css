@@ -185,6 +185,14 @@ html{
     height: 20px; /* Image height */
     display: block; /* Ensures the image fits inside without extra spacing */
   }
+  .accountName{
+    position: absolute;
+    top:0px;
+    left: 90%;
+    font-size: 16pt;
+    color: #141210;
+    
+  }
   
 
   /*Order matters for this pseudo selector!*/

@@ -64,6 +64,7 @@ function loadHomePage()
 function loadUserLogin()
 {
     //several input types: hidden, email, color, button, checkbox, file, date, datetime-local, radio, tel, search, range, url, week, password
+  
     const contentDiv = document.querySelector(".blogPost");
     const testUserBox = document.querySelector("#user_modal");
     const loginBox = document.querySelector("#login_account_button")
@@ -81,29 +82,73 @@ function loadUserLogin()
     const userBox = document.createElement("div");
     userBox.setAttribute("id","user_modal");
     userBox.setAttribute("draggable","true");
-    userBox.innerHTML = 
-    `
-           <label for="email_address">Email</label>
-           <input type="email" class="modal_input" id="email_address" placeholder="Basic Email Format">
-           <label for="text">Username</label>
-           <input type="text" class="modal_input" id ="username" placeholder="4-12 chars, Alphanumeric">
-           <label for="user_password">Password</label>
-           <input type="password" class="modal_input" id="user_password" placeholder="8+ chars, 1 uppercase, 1 lowercase, 1 digit">
-           <label for"password_check">Re-Type your Password</label>
-           <input type="password" class="modal_input" id="user_password_re" placeholder="Retype the password entered.">
-           <button class="modal_input" id="create_account_button" type="button" value="createAcc">Create Account</button>
-           <p>Or...</p>
-           <button class="modal_input" id="login_account_button" type="button" value="loginAcc">Login</button>
-           <button class="modal_input" id="exit_button" type="button" value="exit"><img src="exitButton.jpg" alt="exit Button"></button>
+    
+    //observe the output before anything has been done
+    //localStorage.clear();
 
-    `;
+    const account = localStorage.getItem('currentAccount');
+
+    if (account) {
+        console.log("Someone is logged in.");
+        setAccount();
+        userBox.innerHTML = 
+        `
+               <label for="email_address">Email</label>
+               <input type="email" class="modal_input" id="email_address" placeholder="Basic Email Format">
+               <label for="text">Username</label>
+               <input type="text" class="modal_input" id ="username" placeholder="4-12 chars, Alphanumeric">
+               <label for="user_password">Password</label>
+               <input type="password" class="modal_input" id="user_password" placeholder="8+ chars, 1 uppercase, 1 lowercase, 1 digit">
+               <label for"password_check">Re-Type your Password</label>
+               <input type="password" class="modal_input" id="user_password_re" placeholder="Retype the password entered.">
+               <button class="modal_input" id="create_account_button" type="button" value="createAcc">Create Account</button>
+               <p>Or...</p>
+               <button class="modal_input" id="logout_account_button" type="button" value="logoutAcc">Logout</button>
+               <button class="modal_input" id="exit_button" type="button" value="exit"><img src="exitButton.jpg" alt="exit Button"></button>
+    
+        `;
+        contentDiv.append(userBox);
+        const logoutButton = document.querySelector("#logout_account_button");
+        logoutButton.addEventListener("click", function(){
+            logoutAccountButton();
+        });
+    } else {
+       console.log("No one is logged in.");
+       userBox.innerHTML = 
+       `
+              <label for="email_address">Email</label>
+              <input type="email" class="modal_input" id="email_address" placeholder="Basic Email Format">
+              <label for="text">Username</label>
+              <input type="text" class="modal_input" id ="username" placeholder="4-12 chars, Alphanumeric">
+              <label for="user_password">Password</label>
+              <input type="password" class="modal_input" id="user_password" placeholder="8+ chars, 1 uppercase, 1 lowercase, 1 digit">
+              <label for"password_check">Re-Type your Password</label>
+              <input type="password" class="modal_input" id="user_password_re" placeholder="Retype the password entered.">
+              <button class="modal_input" id="create_account_button" type="button" value="createAcc">Create Account</button>
+              <p>Or...</p>
+              <button class="modal_input" id="login_account_button" type="button" value="loginAcc">Login</button>
+              <button class="modal_input" id="exit_button" type="button" value="exit"><img src="exitButton.jpg" alt="exit Button"></button>
+   
+       `;
+       contentDiv.append(userBox);
+       const loadButton = document.querySelector("#login_account_button");
+   
+       loadButton.addEventListener("click",function()
+       {
+           loadAccountButton();
+       });
+    }
+
+    
+   
     //for a true pop-up, i need to NOT erase contentDiv. just find previous user_box and delete it
    // contentDiv.innerHTML ="";
     //CLEARS OUT PREVIOUS HTML
-    contentDiv.append(userBox);
+    
     //I should surround these functions inside an event listener
     const createButton = document.querySelector("#create_account_button");
     const exitButton = document.querySelector("#exit_button");
+   
     exitButton.addEventListener("click", function()
     {
        // Looks correct but ISNT contentDiv.remove(userBox);
@@ -115,11 +160,20 @@ function loadUserLogin()
         createAccountButton();
     });
 
-    const loadButton = document.querySelector("#login_account_button");
-    loadButton.addEventListener("click",function()
-    {
-        loadAccountButton();
-    });
+  
+}
+function clearLoginBox()
+{
+    //same logic as exit Button
+    //If I choose to refactor, can just call this function for the exit button. As of now, I want to call for logging in and logging out
+    const userBox = document.querySelector("#user_modal");
+    userBox.remove();
+}
+function logoutAccountButton()
+{
+    localStorage.clear();
+    emptyAccount();
+    clearLoginBox();
 }
 function createAccountButton()
 {
@@ -189,7 +243,7 @@ function loadAccountButton()
         console.log("Changing HTML");
         userBox.innerHTML=
     `
-        <label for="text">Username</label>
+        <label for="username">Username</label>
         <input type="text" class="modal_input" id ="username" placeholder="4-12 chars, Alphanumeric">
         <label for="user_password">Password</label>
         <input type="password" class="modal_input" id="user_password" placeholder="8+ chars, 1 uppercase, 1 lowercase, 1 digit">
@@ -227,7 +281,21 @@ function loadAccountButton()
                 username: testUsername.value,
                 password: testPassword.value
             };
-            validateLogin(data);
+            if(data.username === "" || data.password === "")
+            {
+                const usernameField = document.querySelector("#username");
+                usernameField.setAttribute("placeholder", "Please enter your username.");
+                usernameField.style.color = "red";
+                const passwordField = document.querySelector("#user_password");
+                passwordField.setAttribute("placeholder", "Please enter your Password.");
+                passwordField.style.color = "red";
+
+            }
+            else{
+                validateLogin(data);
+                console.log("Why am i here...");
+            }
+            
          });
        
   
@@ -267,8 +335,24 @@ function validateLogin(data)
         // Retrieve and use when needed
         const storedAccount = JSON.parse(localStorage.getItem('currentAccount'));
         console.log('Stored account:', storedAccount);
+        setAccount();
+        clearLoginBox();
     })
     
+}
+//puts the account Name at the top right
+function setAccount()
+{
+    const account = JSON.parse(localStorage.getItem('currentAccount'));
+    const name = account.username;
+    console.log(name, 'THE NAME');
+    const headerName = document.querySelector(".accountName");
+    headerName.innerHTML=name;
+}
+function emptyAccount()
+{
+    const headerName = document.querySelector(".accountName");
+    headerName.innerHTML="";
 }
 function validateAccount(data){ 
     //fetch: ('postURL', 
