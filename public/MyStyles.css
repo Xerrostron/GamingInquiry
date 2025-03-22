@@ -26,9 +26,47 @@ footer{
 #title{
     font-size: 48pt;
 }
+.create_labels{
+  font-size:20pt;
+}
+
+/* If refactoring, combine create_post, create_title, create_note for brevity.*/
+#create_post{
+  
+  width: 80%;
+  border-radius: 4pt;
+  border-color: rgb(5, 3, 3);
+  border-width: 4pt;
+  font-size:16pt;
+  
+}
+#postSubmitButton{
+  width:15%;
+  font-size:16pt;
+  border-radius: 4pt;
+  border-color: rgb(5, 3, 3);
+  border-width: 4pt;
+}
+#create_title{
+  width: 80%;
+  border-radius: 4pt;
+  border-color: rgb(5, 3, 3);
+  border-width: 4pt;
+  font-size:16pt;
+}
+#create_note{
+  width: 80%;
+  border-radius: 4pt;
+  border-color: rgb(5, 3, 3);
+  border-width: 4pt;
+  font-size:16pt;
+}
+.warningTexts{
+  color:rgb(163, 13, 13);
+}
 /* Apply this to the li elements, not ul*/
 /*Alternatively: ul, li */
-#pageTop{
+.pageTop{
     display: inline-block;
     /* Removes the bullet points */
     list-style-type: none;
@@ -45,6 +83,9 @@ main > p, main>h2>p{
     text-align: left;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-size: 16pt;
+    word-wrap: break-word; /* Allow long words to wrap */
+    white-space: normal; /* Ensure text breaks as needed */
+    overflow-wrap: break-word; /* Same as word-wrap for newer browsers */
 }
 main > h1{
     text-align: center;
@@ -192,6 +233,73 @@ html{
     font-size: 16pt;
     color: #141210;
     
+  }
+  .blogModal{
+    display: block;
+    position: absolute;
+    top: 17%;
+    left: 17%;
+    /**background-color: #ffCD90;*/
+    background: #ffCD90;
+    z-index: 1000;
+    max-width: 1200px;
+    border-color:black;
+    border-width:25px;
+    border: solid;
+
+    flex-direction: column;
+    align-items: center;
+
+
+  }
+  /*Relative VS. Absolute Vs. Static (Default)
+  /*margin: outside of element padding: inside of element */
+#rejectButton, #confirmButtonPreviewModal {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+
+    width: 100px; /* Increase button size */
+    height: 40px;
+    font-size: 16px; /* Make text readable */
+    font-weight: bold;
+    border: none;
+    border-radius: 8px; /* Rounded corners */
+    cursor: pointer;
+    transition: all 0.3s ease-in-out; /* Smooth effects */
+}
+
+/* Reject Button - Red */
+#rejectButton {
+    background-color: #2c8aa7;
+    color: white;
+    margin: 50px 25px 50px 25px;
+}
+
+#rejectButton:hover {
+    background-color: #299954;
+    transform: scale(1.1); /* Slight zoom effect */
+}
+
+/* Confirm Button - Green */
+#confirmButtonPreviewModal {
+    background-color: #9c2a7a;
+    color: white;
+    margin: 50px 25px 50px 25px;
+}
+
+#confirmButtonPreviewModal:hover {
+    background-color: #388E3C;
+    transform: scale(1.1);
+}
+  .previewParagraph{
+    max-width: 1200px;
+    margin: auto;
+    justify-content: left;
+    text-align: left;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 16pt;
+    word-wrap: break-word; /* Allow long words to wrap */
+    white-space: normal; /* Ensure text breaks as needed */
+    overflow-wrap: break-word; /* Same as word-wrap for newer browsers */
   }
   
 
