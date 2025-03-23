@@ -67,7 +67,7 @@ const blogSchema = new mongoose.Schema({
     authorNote:{type: String, required: true}
 });
 const BlogPost = mongoose.model("BlogPost", blogSchema);//Change from the hardcoded blogPosts to this (app.get loadBlogPosts)
-const reviewBlogs = mongoose.model("BlogPost", blogSchema);
+const reviewBlogs = mongoose.model("reviewBlogs", blogSchema);
 async function addReviewBlogPost(data)//given the data, add a blogPost to a blog Model
 {
     console.log("Paragraphs: ", data.paragraphs, "Title ", data.title, "AuthorName " , data.author, "AuthorNote " , data.authorNote);
@@ -203,7 +203,7 @@ app.get('/loadBlogPosts', async (req, res) => {
 //Can use fetch() method which can process a POST request at a certain URL
 
 //POST request that loads the account requested. POST request used for password Authentification
-app.post('/confirmPendingBlog', async(req,res) =>{//PUT ON REVIEW
+app.post('/confirmPendingBlog', async(req,res) =>{//PUT ON REVIEW, PUTS A BLOG UNDER REVIEW
     //logging shows that the body is: author, authorNote, paragraphs, title
     console.log(req.body);
     const {paragraphs, title, author, authorNote} = req.body;
@@ -226,25 +226,80 @@ app.post('/postNewBlog', async(req,res)=>{ //CONFIRMING
     try{
         data = {paragraphs, title, author, authorNote};
         await addNewBlogPost(data);//addReviewBlogPost
-        res.status(201).json({message: "Blog post submitted to database."});
+        return res.status(201).json({message: "Blog post submitted to database."});
     }
     catch(error)
     {
         console.error("Error posting blog under review: ", error);
-        res.status(500).json({message: "Internal server error."});
+        return res.status(500).json({message: "Internal server error."});
     }
 
 })
-app.post('/removeBlogFromReview', async(req,res)=>{
+
+app.post('/removeBlogFromReview', async (req, res) => {
     console.log(req.body);
-    const {paragraphs, title, author, authorNote} = req.body;
-    data = {paragraphs, title, author, authorNote};
-    const removedBlog = await reviewBlogs({title});
-    if(removedBlog == data)
-    {
-        console.log("Set to remove.");
+    const { paragraphs, title, author, authorNote } = req.body;
+
+    try {
+        // Fetch the blog from the review list
+        const removedBlog = await reviewBlogs.findOne({ title, author });
+
+        if (!removedBlog) {
+            return res.status(404).json({ message: "Blog not found in review list." });
+        }
+
+        // Ensure it matches exactly before removing
+        if (
+            removedBlog.title === title &&
+            removedBlog.author === author &&
+            JSON.stringify(removedBlog.paragraphs) === JSON.stringify(paragraphs) &&
+            removedBlog.authorNote === authorNote
+        ) {
+            // Remove from the review list (assuming `reviewBlogs` is a collection)
+            await reviewBlogs.deleteOne({ title, author });
+
+            console.log("Blog removed from review.");
+            return res.status(200).json({ message: "Blog successfully removed from review list." });
+        } else {
+            return res.status(400).json({ message: "Blog data mismatch. Cannot remove." });
+        }
+    } catch (error) {
+        console.error("Error removing blog from review:", error);
+        return res.status(500).json({ message: "Internal server error." });
     }
-})
+});
+app.post('/removeBlog', async (req, res) => {
+    console.log(req.body);
+    const { paragraphs, title, author, authorNote } = req.body;
+
+    try {
+        // Fetch the blog from the review list
+        const removedBlog = await BlogPost.findOne({ title, author });
+
+        if (!removedBlog) {
+            return res.status(404).json({ message: "Blog not found in review list." });
+        }
+
+        // Ensure it matches exactly before removing
+        if (
+            removedBlog.title === title &&
+            removedBlog.author === author &&
+            JSON.stringify(removedBlog.paragraphs) === JSON.stringify(paragraphs) &&
+            removedBlog.authorNote === authorNote
+        ) {
+            // Remove from the review list (assuming `reviewBlogs` is a collection)
+            await BlogPost.deleteOne({ title, author });
+
+            console.log("Blog removed from review.");
+            return res.status(200).json({ message: "Blog successfully removed from review list." });
+        } else {
+            return res.status(400).json({ message: "Blog data mismatch. Cannot remove." });
+        }
+    } catch (error) {
+        console.error("Error removing blog from review:", error);
+        return res.status(500).json({ message: "Internal server error." });
+    }
+});
 app.post('/loadAccount', async(req,res) =>{
     //req.body used mostly in POST
     //req.query takes results from the url for GET

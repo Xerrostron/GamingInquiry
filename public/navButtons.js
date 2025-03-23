@@ -112,7 +112,7 @@ async function ownerButtonListenerProper()
 
     contentDiv.innerHTML = `
       <main>
-         <h1>Blog Posts Under Review:</h1>
+         <h1>Owner Post Moderation:</h1>
      </main>
     `;
 
@@ -129,25 +129,39 @@ async function ownerButtonListenerProper()
      button.classList.add("blog-title");
     
     // Create accept and reject buttons as images
-     const acceptImg = document.createElement("img");
-     acceptImg.src = "acceptance.png";
-     acceptImg.alt = "Accept";
-     acceptImg.style.width = "20px";
-     acceptImg.style.marginLeft = "5px";
+    const acceptButton = document.createElement("button");
+    const rejectButton = document.createElement("button");
+    acceptButton.setAttribute("class", "reviewAcceptance");
+    acceptButton.setAttribute("id", "acceptanceButton");
+    rejectButton.setAttribute("class", "reviewAcceptance");
+    rejectButton.setAttribute("id", "rejectButton");
+    
+     
+    const acceptImg = document.createElement("img");
+    acceptImg.src = "acceptance.png";
+    acceptImg.alt = "Accept";
+    acceptImg.style.width = "20px"; // Adjust size if needed
+    acceptImg.style.marginLeft = "5px";
+ 
+    const rejectImg = document.createElement("img");
+    rejectImg.src = "rejection.jpg";
+    rejectImg.alt = "Reject";
+    rejectImg.style.width = "20px"; // Adjust size if needed
+    rejectImg.style.marginLeft = "5px";
 
-        const rejectImg = document.createElement("img");
-        rejectImg.src = "rejection.jpg";
-        rejectImg.alt = "Reject";
-        rejectImg.style.width = "20px";
-        rejectImg.style.marginLeft = "5px";
+    acceptButton.appendChild(acceptImg);
+    rejectButton.appendChild(rejectImg);
 
     // Append the title button and the action images to the post container
      postContainer.appendChild(button);
-     postContainer.appendChild(acceptImg);
-     postContainer.appendChild(rejectImg);
+     postContainer.appendChild(acceptButton);
+     postContainer.appendChild(rejectButton);
 
     // Append the entire post container to the mainBlock
      mainBlock.appendChild(postContainer);
+     // Attach event listeners to the correct blog post
+    acceptButton.addEventListener("click", () => handleAccept(post));
+    rejectButton.addEventListener("click", () => handleReject(post));
     }
     const reviewBlogPosts = await getReviewBlogPosts();
     console.log(reviewBlogPosts);
@@ -161,6 +175,65 @@ async function ownerButtonListenerProper()
 // Loop through regular blog posts
     BlogPosts.forEach(createPostElement);
 
+}
+function handleAccept(post)//I dont actually have any use for this atm. dont do anything. This is purely for my own ease
+{
+   
+   console.log("Finish this logic another time or just dont use it. Mainly wanted this tab to delete stuff on the front-end.");
+
+}
+//This works: However, the list should be updated after each removal! Implement this, then apply to the review Tab
+function handleReject(post)//Delete the post
+{
+   console.log("Post: " + post);
+   deleteBlog(post);
+   deleteBlogFromReview(post);
+   ownerButtonListenerProper();
+   //redo Owner Panel HTML
+}
+function deleteBlog(post) {
+    return fetch('/removeBlog', {  // Ensure fetch is returned
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(post),
+    })
+    .then(response => {
+        if (!response.ok) {
+            console.error("Failed Post Data:", post);
+            throw new Error('Post Failed To Be Removed: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log("Post successfully removed:", data);
+    })
+    .catch(error => {
+        console.error("Error removing post:", error);
+    });
+}
+function deleteBlogFromReview(post) {
+    return fetch('/removeBlogFromReview', {  // Ensure fetch is returned
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(post),
+    })
+    .then(response => {
+        if (!response.ok) {
+            console.error("Failed Post Data:", post);
+            throw new Error('Post Failed To Be Removed: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log("Post successfully removed:", data);
+    })
+    .catch(error => {
+        console.error("Error removing post:", error);
+    });
 }
 async function ownerButtonListener()
 {
@@ -321,8 +394,9 @@ function blogAcceptance(data)//passing in the object that i want to remove
     rejectButtonListener(data);
 }
 function acceptButtonListener(data)
-{
+{//blog is not successfully being posted
     const acceptButton = document.querySelector("#acceptanceButton");
+    console.log("Data being passed to /postNewBlog: " + data);
     acceptButton.addEventListener("click", function()
     {
         fetch('/postNewBlog', {
@@ -341,14 +415,31 @@ function acceptButtonListener(data)
                 console.log(data.authorNote);
                 throw new Error('Post Failed: ' + response.status);
             }
-            return response.json();
+            else{
+                deleteBlogFromReview(data);
+                console.log("reviewButtonListenerActivated");
+                reviewButtonListener();
+                return response.json();
+            }
+            
         })
+        .catch(error => {
+            console.error("Error posting blog:", error);
+        });
     });
     
 }
 function rejectButtonListener(data)
 {
-
+    console.log("reviewButtonListenerActivated REJECT");
+    const rejectButton = document.querySelector("#rejectButton");
+    rejectButton.addEventListener("click", function()
+    {
+        deleteBlogFromReview(data);
+        reviewButtonListener();
+    });
+    
+    
 }
 function removeReviewPost(data)
 {
@@ -1235,7 +1326,7 @@ function loadAboutPage()
     </main>
     `;
 }
-function loadBrowsePage()
+async function loadBrowsePage()
 {
     //NOTE: innerHTML does NOT ACTIVATE A SCRIPT!
     const contentDiv = document.querySelector(".blogPost");
@@ -1247,6 +1338,7 @@ function loadBrowsePage()
     `;
     //loadArticleTitlesRevised(); this method might not work because of scope with contentDiv
     const mainBlock = contentDiv.querySelector("main");
+    const blogPosts = await fetchBlogPosts();
 
     blogPosts.forEach(post => {
         const button = document.createElement("button"); 
