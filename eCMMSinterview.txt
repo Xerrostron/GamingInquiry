@@ -1,0 +1,162 @@
+📞 Phone Interview Cheat Sheet: Full Talking Points
+1. Tell me about yourself.
+
+    Axel Martinez, Computer Science background.
+
+    Experience with C#, SQL, JavaScript.
+
+    Built projects integrating databases and automation logic.
+
+    Fast learner, strong in troubleshooting and eager to apply skills to hardware/software integration.
+
+    Passionate about understanding full data flow: from physical devices to data systems.
+
+2. What experience do you have with device integration / protocols / automation?
+
+    Experience with API integrations and understanding data flow between systems.
+
+    Familiar with networking basics (IP addressing, communication between devices).
+
+    Understand concepts of OPC, MQTT, Ethernet/IP — publish-subscribe models, client-server communication.
+
+    Eager to apply skills to real-world device communication.
+
+    Quick learner, already exploring device protocols independently.
+
+3. Describe a time you solved a challenging technical problem.
+
+    Built an expense tracker — ran into data inconsistency issues.
+
+    Troubleshot by breaking down processes step by step.
+
+    Used logging and testing to isolate problems.
+
+    Fixed logic errors and improved data validation.
+
+    Outcome: System became stable, cleaner data flow, and learned structured troubleshooting.
+
+4. What is your experience with programming languages?
+
+    Comfortable with C#: used for building backend logic.
+
+    SQL: Strong with queries, database design, normalization (BCNF).
+
+    JavaScript: Used for front-end and automation scripts.
+
+    Willing to deepen experience in Node-Red and automation platforms.
+
+    Always looking to expand my stack to meet project needs.
+
+5. Are you familiar with PLC programming?
+
+    Limited direct experience, but familiar with logic flow (if/else, state machines).
+
+    Studied ladder logic and PLC concepts (Allen-Bradley, Siemens).
+
+    Excited to learn PLC programming hands-on — parallels with existing programming experience.
+
+6. What are your strengths?
+
+    Problem-solving and logical thinking.
+
+    Ability to learn new tools and technologies quickly.
+
+    Strong work ethic and accountability.
+
+    Collaborative team player but also work well independently.
+
+    Calm under pressure — enjoy working in fast-paced environments.
+
+7. What are your weaknesses?
+
+    New to direct device-level integrations.
+
+    Tend to want to fully understand systems, sometimes leads to deep dives — working on balancing depth with efficiency.
+
+    Proactively closing this gap through courses and hands-on learning.
+
+8. Why do you want this job?
+
+    Excited about combining software skills with real-world systems and automation.
+
+    Opportunity to work with a growing company and expand technical depth.
+
+    Passionate about building reliable, integrated systems that improve operational efficiency.
+
+    Looking to grow in industrial automation and data integration.
+
+9. How do you handle learning new technologies?
+
+    Self-driven learner: use documentation, online courses, and hands-on experimentation.
+
+    Break complex topics into digestible parts.
+
+    Apply knowledge to small projects to reinforce learning.
+
+    Not afraid to ask questions or seek mentorship when needed.
+
+10. How do you handle multiple priorities / fast-paced environments?
+
+    Prioritize tasks by urgency and impact.
+
+    Break down complex projects into actionable steps.
+
+    Stay organized with task management tools.
+
+    Maintain clear communication with team and managers.
+
+11. Are you comfortable with irregular hours?
+
+    Yes — fully understand the needs of supporting operations and systems.
+
+    Flexible and adaptable to shifting business priorities.
+
+12. Do you have experience with MES or SCADA systems?
+
+    Familiar conceptually: data acquisition, visualization, control systems.
+
+    No hands-on yet, but actively learning.
+
+    Eager to work with MES/SCADA to understand end-to-end manufacturing processes.
+
+13. Experience with industrial printers, barcode scanners, cameras?
+
+    Familiar with how they integrate into larger systems.
+
+    Understand data collection and importance of accuracy in automated systems.
+
+    Eager to gain hands-on experience.
+
+14. Do you have any questions for us? (ALWAYS have a few!)
+
+    "What does a typical day look like in this role?"
+
+    "What are the biggest challenges the team is currently facing?"
+
+    "What kind of training or onboarding do you provide for new technologies?"
+
+    "How does the team collaborate on troubleshooting device or system issues?"
+
+    "What opportunities are there for growth and learning new systems?"
+
+✅ Final Tips:
+
+    Smile while you talk (seriously — even on the phone, it helps your tone!)
+
+    Keep a glass of water nearby.
+
+    Have this sheet printed or on a second screen.
+
+    Breathe before answering.
+
+    It’s okay to take a second to think!
+
+If you want, I can also prep:
+
+    Rapid flashcards for quick memory boosts before the call.
+
+    A "closing statement" to end the call strong.
+
+    Or, mock Q&A (I can quiz you real quick).
+
+Would you like that too? 🚀
